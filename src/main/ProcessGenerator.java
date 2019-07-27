@@ -11,13 +11,13 @@ public class ProcessGenerator {
         ArrayList<Process> processes = new ArrayList<>();
 
         Random random = new Random();
-        random.setSeed(seed);
+        //random.setSeed(seed);
 
         for (int i = 0; i < numProcesses; i++ ) {
             char name = (char) ('A' + i);
 
             int arrivalTime = random.nextInt(150);
-            int serviceTime = random.nextInt(10) +1;
+            int serviceTime = random.nextInt(9) +1;
             int priority = random.nextInt(4) + 1;
 
             processes.add(new Process(name, arrivalTime, serviceTime, priority));
@@ -38,8 +38,8 @@ public class ProcessGenerator {
         }
 
 
-        for (int j = 0; j < processes.size(); j++)
-            processes.get(j).setName((char)('A'+j));
+        //for (int j = 0; j < processes.size(); j++)
+        //    processes.get(j).setName((char)('A'+j));
 
         return processes;
     }
