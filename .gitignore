@@ -1,1 +1,13 @@
 out/
+# file: ~/.gitignore_global
+.DS_Store
+.idea
+#IDE metadata
+**.idea/**
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf

@@ -83,7 +83,7 @@ public abstract class Scheduler {
          * Print out the average statistics for the current round
          */
         public void printRoundAvgStats() {
-            System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/100 quantas\n",
+            System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/150 quantas\n",
                     getAvgTurnaroundTime(), getAvgResponseTime(), getAvgWaitingTime(), getAvgThroughput());
             System.out.println();
         }
@@ -127,7 +127,7 @@ public abstract class Scheduler {
             totalAvgThroughput += stat.getAvgThroughput();
         }
         System.out.format("%s (%d run statistics): \n",this.scheduler, overallStats.size());
-        System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/100 quantas\n",
+        System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/150 quantas\n",
                 totalAvgTurnaround/overallStats.size(), totalAvgResponse/overallStats.size(),
                 totalAvgWaiting/overallStats.size(),  totalAvgThroughput/overallStats.size());
     }
