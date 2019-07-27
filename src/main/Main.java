@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Main {
     private static final int RUNS = 5;
     private static final int QUANTA_NUM = 150;
+    private static final int PROCESS_SET_NUM = 20;
 
     public static void main (String[] args) {
         Scheduler fcfs = new FirstComeFirstServed();
@@ -20,11 +21,13 @@ public class Main {
             System.out.println("=================================");
             System.out.println("    Algorithm Test - Round " + i + ":   ");
             System.out.println("=================================");
-            ArrayList<Process> processes = ProcessGenerator.generateDense();
-//            ArrayList<Process> processes = ProcessGenerator.generate();
+            ArrayList<Process> processes = ProcessGenerator.generateSetOfProcesses(PROCESS_SET_NUM);
 
-            for (Process p : processes)
+            for (Process p : processes) {
                 System.out.println(p);
+            }
+
+
             System.out.println();
             fcfs.schedule(processes, QUANTA_NUM);
             sjf.schedule(processes, QUANTA_NUM);

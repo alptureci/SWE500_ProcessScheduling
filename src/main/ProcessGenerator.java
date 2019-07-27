@@ -5,24 +5,19 @@ import java.util.Collections;
 import java.util.Random;
 
 public class ProcessGenerator {
+    static long seed = 3L;
 
-    public static ArrayList<Process> generateDense() {
+    public static ArrayList<Process> generateSetOfProcesses(int numProcesses) {
         ArrayList<Process> processes = new ArrayList<>();
 
         Random random = new Random();
-//        random.setSeed(0);
+        random.setSeed(seed);
 
-        int i = 0;
-        while (i < 25) {
+        for (int i = 0; i < numProcesses; i++ ) {
             char name = (char) ('A' + i);
-//            int arrivalTime = random.nextInt(Integer.MAX_VALUE) % 100;
-//            int serviceTime = random.nextInt(Integer.MAX_VALUE) % 15+1;
-////            if (serviceTime == 0) serviceTime += 1;
-//            int priority = random.nextInt(Integer.MAX_VALUE) % 4 + 1;
 
             int arrivalTime = random.nextInt(150);
             int serviceTime = random.nextInt(10) +1;
-//            if (serviceTime == 0) serviceTime += 1;
             int priority = random.nextInt(4) + 1;
 
             processes.add(new Process(name, arrivalTime, serviceTime, priority));
@@ -31,9 +26,10 @@ public class ProcessGenerator {
 
         Collections.sort(processes);
 
-//        if ()
-        if (processes.get(0).getArrivalTime() > 2)
+        // Set the arrival Time of the first one to 0.
+        if (processes.get(0).getArrivalTime() > 2) {
             processes.get(0).setArrivalTime(0);
+        }
 
         for (int j = 0; j < processes.size()-1; j++) {
             if (processes.get(j).getExpectedEndTime() < processes.get(j+1).getArrivalTime()-2) {
@@ -52,19 +48,14 @@ public class ProcessGenerator {
         ArrayList<Process> processes = new ArrayList<>();
 
         Random random = new Random();
-//        random.setSeed(54);
+        random.setSeed(seed);
 
         int i = 0;
         while (i < 10) {
             char name = (char) ('A' + i);
-//            int arrivalTime = random.nextInt(Integer.MAX_VALUE) % 100;
-//            int serviceTime = random.nextInt(Integer.MAX_VALUE) % 15+1;
-////            if (serviceTime == 0) serviceTime += 1;
-//            int priority = random.nextInt(Integer.MAX_VALUE) % 4 + 1;
 
-            int arrivalTime = random.nextInt(100);
+            int arrivalTime = random.nextInt(150);
             int serviceTime = random.nextInt(10) +1;
-//            if (serviceTime == 0) serviceTime += 1;
             int priority = random.nextInt(4) + 1;
 
             processes.add(new Process(name, arrivalTime, serviceTime, priority));

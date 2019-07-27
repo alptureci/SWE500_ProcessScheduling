@@ -19,7 +19,6 @@ public class FirstComeFirstServed extends Scheduler {
             this.name = p.getName();
             this.arrivalTime = p.getArrivalTime();
             this.serviceTime = p.getServiceTime();
-//            this.startTime = -1;
             this.lastRunTime = this.arrivalTime - 1;
             this.runningTime = 0;
         }
@@ -29,7 +28,6 @@ public class FirstComeFirstServed extends Scheduler {
                     "name=" + name +
                     ", arrivalTime=" + arrivalTime +
                     ", serviceTime=" + serviceTime +
-//                    ", priority=" + priority +
                     ", lastRunTime=" + lastRunTime +
                     ", runningTime=" + runningTime +
                     '}';
@@ -63,9 +61,14 @@ public class FirstComeFirstServed extends Scheduler {
 
             /*
             If curProcess is finished (curProcess == null), and the waitingQueue is not empty, we poll a process from waitingQueue;
+
+            Turn Around Time: Time Difference between completion time and arrival time.
+            Turn Around Time = Completion Time - Arrival Time
+
+            Waiting Time(W.T): Time Difference between turn around time and burst time.
+            Waiting Time = Turn Around Time - Burst Time
              */
             if (curProcess == null && waitingQueue.size() != 0) {
-//                RunningProcess curProcess = waitingQueue.pollFirst();
                 curProcess = waitingQueue.pollFirst();
                 timeChart.add(curProcess.name);
                 stats.addProcess();

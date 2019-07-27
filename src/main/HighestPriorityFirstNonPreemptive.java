@@ -127,7 +127,7 @@ public class HighestPriorityFirstNonPreemptive extends Scheduler {
     }
 
     public static void main (String[] args) {
-        ArrayList<Process> processes = ProcessGenerator.generateDense();
+        ArrayList<Process> processes = ProcessGenerator.generateSetOfProcesses(20);
         for (Process p : processes)
             System.out.println(p);
         HighestPriorityFirstNonPreemptive test = new HighestPriorityFirstNonPreemptive();

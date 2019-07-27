@@ -180,7 +180,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
 
     public static void main (String[] args) {
 //        ArrayList<Process> processes = ProcessGenerator.generate();
-        ArrayList<Process> processes = ProcessGenerator.generateDense();
+        ArrayList<Process> processes = ProcessGenerator.generateSetOfProcesses(20);
         for (Process p : processes)
             System.out.println(p);
         ShortestRemainingTimeFirst test = new ShortestRemainingTimeFirst();
