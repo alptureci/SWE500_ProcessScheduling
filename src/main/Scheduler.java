@@ -12,8 +12,6 @@ public abstract class Scheduler {
     protected Stats overallStats = new Stats();
     protected String algorithmName;
     protected StatsPerRun currentRunStats;
-    protected LinkedList<Process> waitingQueue;
-    protected ArrayList<LinkedList<Process>> waitingQueues;
     protected TimeChart timeChart;
     protected static final int NUM_PRIORITY = 4;
 
@@ -45,10 +43,7 @@ public abstract class Scheduler {
             p.lastRunTime = 0;
             p.waitcount = 0;
         }
-        this.waitingQueue = new LinkedList<>();
-        this.waitingQueues = new ArrayList<>(NUM_PRIORITY);
-        for (int i = 0; i < NUM_PRIORITY; i++)
-            waitingQueues.add(new LinkedList<>());
+
         this.timeChart = new TimeChart();
         this.currentRunStats = new StatsPerRun();
         if (overallStats.StatsTable.containsKey(this.algorithmName))

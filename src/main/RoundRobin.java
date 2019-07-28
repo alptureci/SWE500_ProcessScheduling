@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class RoundRobin extends Scheduler {
 
-//    private final String NAME = "RoundRobin";
+    private LinkedList<Process> waitingQueue = new LinkedList<>();
 
     public RoundRobin () {
         super("RoundRobin");
@@ -14,6 +14,7 @@ public class RoundRobin extends Scheduler {
     @Override
     public void schedule (ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
+        waitingQueue.clear();
 
         int qi = 0;
         for (int i = 0; i < quantaNum; i++) {

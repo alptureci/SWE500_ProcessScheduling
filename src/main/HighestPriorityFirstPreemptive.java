@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class HighestPriorityFirstPreemptive extends Scheduler {
 
+    private ArrayList<LinkedList<Process>> waitingQueues = new ArrayList<>(NUM_PRIORITY);
+
     public HighestPriorityFirstPreemptive() {
         super("Highest Priority First-Preemptive");
     }
@@ -22,6 +24,10 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
     @Override
     public void schedule(ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
+
+        waitingQueues.clear();
+        for (int i = 0; i < NUM_PRIORITY; i++)
+            waitingQueues.add(new LinkedList<>());
 
         int qi = 0; // track which process has been added into
         Process curProcess = null;

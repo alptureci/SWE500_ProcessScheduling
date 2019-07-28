@@ -6,22 +6,16 @@ import java.util.PriorityQueue;
 
 
 public class ShortestJobFirst extends Scheduler{
-	
+
+    private PriorityQueue<Process> waitingQueue;
+
 	public ShortestJobFirst () {
         super("ShortestJobFirst");
-
-    }
-
-	@Override
-    public void schedule (ArrayList<Process> q, int quantaNum) {
-        super.schedule(q, quantaNum);
-
-//        LinkedList<RunningProcess> waitingQueue = new LinkedList<>();
 
         /* use PriorityQueue here so it will poll among the ready processes
         the one with the shortest service time
          */
-        PriorityQueue<Process> waitingQueue = new PriorityQueue<>(
+        waitingQueue = new PriorityQueue<>(
                 new Comparator<Process>() {
                     @Override
                     public int compare(Process p1, Process p2) {
@@ -37,6 +31,13 @@ public class ShortestJobFirst extends Scheduler{
                     }
                 }
         );
+    }
+
+	@Override
+    public void schedule (ArrayList<Process> q, int quantaNum) {
+        super.schedule(q, quantaNum);
+        waitingQueue.clear();
+
         int qi = 0;
 
         int i = 0; // indicate which timechart it is now

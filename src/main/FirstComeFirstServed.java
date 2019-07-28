@@ -1,8 +1,11 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class FirstComeFirstServed extends Scheduler {
+
+    private LinkedList<Process> waitingQueue = new LinkedList<>();
 
     public FirstComeFirstServed () {
         super("FirstComeFirstServed");
@@ -11,6 +14,7 @@ public class FirstComeFirstServed extends Scheduler {
     @Override
     public void schedule (ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
+        waitingQueue.clear();
         int qi = 0;
         /*
         As it's non-preemptive algorithm, the process will not change until it's finished,
