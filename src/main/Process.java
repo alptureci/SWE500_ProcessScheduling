@@ -1,12 +1,16 @@
 package main;
 
 public class Process implements Comparable<Process> {
-    private char name;
-    private int arrivalTime;
-    private int serviceTime;
-    private int priority;
+    public String name;
+    public int arrivalTime;
+    public int serviceTime;
+    public int priority;
+    public int lastRunTime; // last running quanta
+    public int runningTime; // how long the process has been running
+    public int remainingTime;
+    public int waitcount;
 
-    public void setName(char name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -18,16 +22,21 @@ public class Process implements Comparable<Process> {
         this.serviceTime = serviceTime;
     }
 
-    public Process(char name, int arrivalTime, int serviceTime, int priority) {
+    public Process(String name, int arrivalTime, int serviceTime, int priority) {
         this.name = name;
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
         this.priority = priority;
+        this.remainingTime = serviceTime;
+
+//            this.startTime = -1;
+        this.lastRunTime = this.arrivalTime - 1;
+        this.runningTime = 0;
     }
 
 
 
-    public char getName() {
+    public String getName() {
         return name;
     }
 
@@ -53,8 +62,9 @@ public class Process implements Comparable<Process> {
                 "name=" + name +
                 ", arrivalTime=" + arrivalTime +
                 ", serviceTime=" + serviceTime +
-                ", expectedEndTime=" + (arrivalTime+serviceTime) +
+                ", completionTime=" + lastRunTime +
                 ", priority=" + priority +
+                ", expectedEndTime=" + (arrivalTime+serviceTime) +
                 '}';
     }
 

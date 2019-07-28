@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
     private static final int RUNS = 5;
     private static final int QUANTA_NUM = 150;
-    private static final int PROCESS_SET_NUM = 20;
+    private static final int PROCESS_SET_NUM = 40;
 
     public static void main (String[] args) {
         Scheduler fcfs = new FirstComeFirstServed();
@@ -47,17 +47,17 @@ public class Main {
         System.out.println("Final Average Statistics Report:");
         System.out.println("================================");
 
-        fcfs.printAvgStats();
-        sjf.printAvgStats();
-        srt.printAvgStats();
-        rr.printAvgStats();
-        hpfnp.printAvgStats();
-        hpfp.printAvgStats();
+        fcfs.printAvgOverAllStats();
+        sjf.printAvgOverAllStats();
+        srt.printAvgOverAllStats();
+        rr.printAvgOverAllStats();
+        hpfnp.printAvgOverAllStats();
+        hpfp.printAvgOverAllStats();
         System.out.println("-------------------------------");
         System.out.println("    Extra Credit Algorithms");
         System.out.println("-------------------------------");
-        hpfnpa.printAvgStats();
-        hpfpa.printAvgStats();
+        hpfnpa.printAvgOverAllStats();
+        hpfpa.printAvgOverAllStats();
 
     }
 }

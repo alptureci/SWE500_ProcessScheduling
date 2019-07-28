@@ -2,7 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 
@@ -12,50 +11,20 @@ public class ShortestJobFirst extends Scheduler{
         super("ShortestJobFirst");
 
     }
-	
-	private class RunningProcess {
-        private char name;
-        private int arrivalTime;
-        private int serviceTime;
-        private int lastRunTime; // last running quanta
-        private int runningTime; // how long the process has been running
 
-        public RunningProcess(Process p) {
-            this.name = p.getName();
-            this.arrivalTime = p.getArrivalTime();
-            this.serviceTime = p.getServiceTime();
-//            this.startTime = -1;
-            this.lastRunTime = this.arrivalTime - 1;
-            this.runningTime = 0;
-        }
-
-        /* for debugging purpose
-         */
-        @Override
-        public String toString() {
-            return "RunningProcess{" +
-                    "name=" + name +
-                    ", arrivalTime=" + arrivalTime +
-                    ", serviceTime=" + serviceTime +
-                    ", lastRunTime=" + lastRunTime +
-                    ", runningTime=" + runningTime +
-                    '}';
-        }
-    }
-	
 	@Override
     public void schedule (ArrayList<Process> q, int quantaNum) {
-        StatsPerRun stats = new StatsPerRun();
+        super.schedule(q, quantaNum);
 
 //        LinkedList<RunningProcess> waitingQueue = new LinkedList<>();
 
         /* use PriorityQueue here so it will poll among the ready processes
         the one with the shortest service time
          */
-        PriorityQueue<RunningProcess> waitingQueue = new PriorityQueue<>(
-                new Comparator<RunningProcess>() {
+        PriorityQueue<Process> waitingQueue = new PriorityQueue<>(
+                new Comparator<Process>() {
                     @Override
-                    public int compare(RunningProcess p1, RunningProcess p2) {
+                    public int compare(Process p1, Process p2) {
                         if (p1.serviceTime < p2.serviceTime) return -1;
                         else if (p1.serviceTime > p2.serviceTime) return 1;
                         else // if serviceTime is equal, then we use FCFS;
@@ -68,8 +37,7 @@ public class ShortestJobFirst extends Scheduler{
                     }
                 }
         );
-        ArrayList<Character> timeChart = new ArrayList<>();
-        int qi = 0; 
+        int qi = 0;
 //        int index = 0;
 //        waitingQueue.addLast(new RunningProcess(q.get(qi))); // add first process to waitingqueue
 //        // for each process in q, compare its service time with other process in waitingqueue
@@ -104,7 +72,7 @@ public class ShortestJobFirst extends Scheduler{
         
 // stats not working right. need to fix stats output        
         int i = 0; // indicate which timechart it is now
-        RunningProcess curProcess = null; // use curProcess to check which process is running, how long it runs
+        Process curProcess = null; // use curProcess to check which process is running, how long it runs
         while (i < quantaNum || curProcess != null)
         /*
         Two termination conditions: (1) It's still within the quantaNum;
@@ -117,7 +85,7 @@ public class ShortestJobFirst extends Scheduler{
             ready to be added into waitingQueue;
              */
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i)
-                waitingQueue.add(new RunningProcess(q.get(qi++)));
+                waitingQueue.add(q.get(qi++));
 
             /*
             If curProcess is null, means the process has finished, and we will get the next process from
@@ -140,13 +108,9 @@ public class ShortestJobFirst extends Scheduler{
                 else curProcess is run for the first time within quantaNum;
                  */
                 else if (curProcess.runningTime == 0) {
-                    stats.addProcess(); // the process runs for the first time, we increase the process number;
-                    stats.addResponseTime(i - curProcess.arrivalTime); // also count the response time;
                 }
                 timeChart.add(curProcess.name);
-                stats.addQuanta();
-                stats.addWaitingTime(i - curProcess.lastRunTime - 1);
-                stats.addTurnaroundTime(i-curProcess.lastRunTime);
+                currentRunStats.addQuanta();
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
                 // if runningTime equals to serviceTime, then curProcess can be finished (set to null)
@@ -158,7 +122,7 @@ public class ShortestJobFirst extends Scheduler{
             timeChart for this time slice.
              */
             else if (i < quantaNum)
-                timeChart.add('-');
+                timeChart.addIdlePeriod();
 
             i++; // if program can come here, meaning the quanta has finished, increase i;
 
@@ -173,26 +137,6 @@ public class ShortestJobFirst extends Scheduler{
 //            curProcess.lastRunTime = i;
 //        	}
         }
-        
-        System.out.println(this.scheduler);
-        printTimeChart(timeChart);
-        stats.printRoundAvgStats();
-        storeOneRoundStats(stats);
+        this.printCurrentRunStats(q);
 	}
-
-    public static void main (String[] args) {
-        ArrayList<Process> processes = ProcessGenerator.generate();
-//        ArrayList<Process> processes = ProcessGenerator.generateDense();
-
-        for (Process p : processes)
-            System.out.println(p);
-        ShortestJobFirst test = new ShortestJobFirst();
-        test.schedule(processes, 50);
-//        test.schedule(processes, 50);
-        test.printAvgStats();
-
-
-    }
-	
-
 }

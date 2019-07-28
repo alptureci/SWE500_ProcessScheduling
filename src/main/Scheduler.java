@@ -2,139 +2,60 @@ package main;
 
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  * An abstract object representing a scheduling algorithm which schedules a process queue
  * @author
  */
 public abstract class Scheduler {
-    private ArrayList<StatsPerRun> overallStats;
-    protected String scheduler;
+    protected Stats overallStats = new Stats();
+    protected String algorithmName;
+    protected StatsPerRun currentRunStats;
+    protected LinkedList<Process> waitingQueue;
+    protected ArrayList<LinkedList<Process>> waitingQueues;
+    protected TimeChart timeChart;
+    protected static final int NUM_PRIORITY = 4;
 
     //    private Stats stats = new Stats();
-    public Scheduler(String scheduler) {
-        this.scheduler = scheduler;
-        overallStats = new ArrayList<>();
+    public Scheduler(String algorithmName) {
+        this.algorithmName = algorithmName;
     }
 
-    /* A inner class to track statistics for a single run */
-    public class StatsPerRun {
-        private int totalTurnaroundTime;
-        private int totalWaitingTime;
-        private int totalResponseTime;
-        private int processCount;
-        private int quanta;
-
-        public StatsPerRun() {
-            this.totalTurnaroundTime = 0;
-            this.totalWaitingTime = 0;
-            this.totalResponseTime = 0;
-            this.processCount = 0;
-            this.quanta = 0;
-        }
-
-        public double getAvgTurnaroundTime () {
-            return (double)totalTurnaroundTime / processCount;
-        }
-
-        public double getAvgWaitingTime () {
-            return (double)totalWaitingTime / processCount;
-        }
-
-        public double getAvgResponseTime () {
-            return (double)totalResponseTime / processCount;
-        }
-
-        public double getAvgThroughput() {
-            return 100 * (double)processCount / quanta;
-        }
-
-        public void addWaitingTime(int time) {
-            this.totalWaitingTime += time;
-        }
-
-        public void addResponseTime(int time) {
-            this.totalResponseTime += time;
-        }
-
-        public void addTurnaroundTime(int time) {
-            this.totalTurnaroundTime += time;
-        }
-
-        public void addProcess() {
-            ++this.processCount;
-        }
-
-        public void addQuanta() {
-            this.quanta++;
-        }
-
-        public int getProcessCount() {
-            return processCount;
-        }
-
-        public int getQuanta() {
-            return quanta;
-        }
-
-        /**
-         * Print out the average statistics for the current round
-         */
-        public void printRoundAvgStats() {
-            System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/150 quantas\n",
-                    getAvgTurnaroundTime(), getAvgResponseTime(), getAvgWaitingTime(), getAvgThroughput());
-            System.out.println();
-        }
-    }
-
-    /**
-     * Print a "time chart" of the results, e.g. ABCDABCD...
-     * @param timeChart A list of Processes that have been scheduled
-     */
-    public static void printTimeChart(ArrayList<Character> timeChart)
+    public void printCurrentRunStats(ArrayList<Process> q)
     {
-        int quanta = 0;
-        System.out.print("    ");
-        for (char c : timeChart) {
-            System.out.print(c);
-//            System.out.print(' ');
-        }
-        System.out.println();
+        System.out.println(this.algorithmName);
+        timeChart.printTimeChart();
+        currentRunStats.printRoundAvgStats(q);
     }
 
-    /**
-     * Add the result of single run into final result array
-     */
-    public void storeOneRoundStats (StatsPerRun stat) {
-        overallStats.add(stat);
-    }
-
-    /**
-     * Print out the average statistics for the given scheduling algorithm
-     */
-    public void printAvgStats()
+    public void printAvgOverAllStats()
     {
-        double totalAvgTurnaround = 0;
-        double totalAvgWaiting = 0;
-        double totalAvgResponse = 0;
-        double totalAvgThroughput = 0;
-        for (StatsPerRun stat : overallStats) {
-            totalAvgTurnaround += stat.getAvgTurnaroundTime();
-            totalAvgResponse += stat.getAvgResponseTime();
-            totalAvgWaiting += stat.getAvgWaitingTime();
-            totalAvgThroughput += stat.getAvgThroughput();
-        }
-        System.out.format("%s (%d run statistics): \n",this.scheduler, overallStats.size());
-        System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/150 quantas\n",
-                totalAvgTurnaround/overallStats.size(), totalAvgResponse/overallStats.size(),
-                totalAvgWaiting/overallStats.size(),  totalAvgThroughput/overallStats.size());
+        overallStats.printAvgOverallStats();
     }
-
     /**
      * Go through the process list sorted by arrival time
      * and schedule them according to the selected scheduling algorithm
      */
-    public abstract void schedule(ArrayList<Process> q, int quantaNum);
+    public void schedule(ArrayList<Process> q, int quantaNum)
+    {
+        for (Process p : q)
+        {
+            p.runningTime = 0;
+            p.lastRunTime = 0;
+            p.waitcount = 0;
+        }
+        this.waitingQueue = new LinkedList<>();
+        this.waitingQueues = new ArrayList<>();
+        this.timeChart = new TimeChart();
+        this.currentRunStats = new StatsPerRun();
+        if (overallStats.StatsTable.containsKey(this.algorithmName))
+        {
+            overallStats.StatsTable.get(this.algorithmName).add(currentRunStats);
+        }
+        else
+        {
+            overallStats.StatsTable.put(this.algorithmName, new ArrayList<>() {{add(currentRunStats);}});
+        }
+    }
 }

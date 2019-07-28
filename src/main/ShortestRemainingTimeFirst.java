@@ -2,66 +2,25 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class ShortestRemainingTimeFirst extends Scheduler {
 
-    private class RunningProcess {
-        private char name;
-        private int arrivalTime;
-        private int serviceTime;
-//        private int priority;
-        private int lastRunTime; // last running quanta
-//        private int runningTime; // how long the process has been running
-//        private int waitcount;
-//        private int expectedEndTime;
-        private int remainingTime;
-
-        public RunningProcess(Process p) {
-            this.name = p.getName();
-            this.arrivalTime = p.getArrivalTime();
-            this.serviceTime = p.getServiceTime();
-//            this.priority = p.getPriority();
-//            this.startTime = -1;
-            this.lastRunTime = this.arrivalTime - 1;
-            this.remainingTime = p.getServiceTime(); // initially the remainingTime is the serviceTime;
-//            this.runningTime = 0;
-//            this.waitcount = 0;
-//            this.expectedEndTime = p.getExpectedEndTime();
-        }
-
-        @Override
-        public String toString() {
-            return "RunningProcess{" +
-                    "name=" + name +
-                    ", arrivalTime=" + arrivalTime +
-                    ", serviceTime=" + serviceTime +
-//                    ", priority=" + priority +
-                    ", lastRunTime=" + lastRunTime +
-//                    ", runningTime=" + runningTime +
-                    ", remainingTime=" + remainingTime +
-//                    ", expectedEndTime=" + expectedEndTime +
-                    '}';
-        }
-    }
-
-    private static final int SHORTEST_REMAINING_TIME = 0;
 //    private ArrayList<LinkedList<RunningProcess>> waitingQueues;
     /*
     In this algorithm, it will be easy to use PriorityQueue for the waitingQueue;
     as every time we poll a process from waitingQueue, it will be the one with shortest remaining time;
      */
-    private PriorityQueue<RunningProcess> waitingQueues;
+    private PriorityQueue<Process> waitingQueues;
 
     public ShortestRemainingTimeFirst() {
         super("Shortest Remaining Time First");
-        waitingQueues = new PriorityQueue<>(new Comparator<RunningProcess>() {
+        waitingQueues = new PriorityQueue<>(new Comparator<Process>() {
             /*
             Define a comparator here so PriorityQueue knows how to compare two processes;
              */
             @Override
-            public int compare(RunningProcess p1, RunningProcess p2) {
+            public int compare(Process p1, Process p2) {
 
                 if (p1.remainingTime < p2.remainingTime) return -1;
                 else if (p1.remainingTime > p2.remainingTime) return 1;
@@ -96,7 +55,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
 
     // 1. choose the next running process;
     // 2. increase the waitcount by 1 for non-selected processes;
-    private RunningProcess nextProcessToRun () {
+    private Process nextProcessToRun () {
 //        RunningProcess curProcess = null;
 //
 //        for (int wi = 0; wi < SHORTEST_REMAINING_TIME; wi++) {
@@ -119,13 +78,9 @@ public class ShortestRemainingTimeFirst extends Scheduler {
 
     @Override
     public void schedule(ArrayList<Process> q, int quantaNum) {
-        Scheduler.StatsPerRun stats = new Scheduler.StatsPerRun();
-        ArrayList<Character> timeChart = new ArrayList<>();
-
+        super.schedule(q, quantaNum);
         int qi = 0; // track which process has been added into
-
-        RunningProcess curProcess = null;
-
+        Process curProcess = null;
         int i = 0;
 
         while (i < quantaNum || !isWaitingQueueEmpty()) {
@@ -135,7 +90,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i) {
                 Process tmp = q.get(qi);
 //                waitingQueues.get(tmp.getExpectedEndTime()-1).addLast(new RunningProcess(tmp));
-                waitingQueues.add(new RunningProcess(tmp));
+                waitingQueues.add(tmp);
                 qi++;
             }
 //            printWaitingQueue();
@@ -149,13 +104,9 @@ public class ShortestRemainingTimeFirst extends Scheduler {
                     continue; // the process never runs before quantaNum, drop it;
                 }
                 else if (curProcess.remainingTime == curProcess.serviceTime) { // the process is never run before quantaNum
-                    stats.addProcess();
-                    stats.addResponseTime(i-curProcess.arrivalTime);
                 }
-                stats.addQuanta();
+                currentRunStats.addQuanta();
                 timeChart.add(curProcess.name);
-                stats.addWaitingTime(i - curProcess.lastRunTime - 1);
-                stats.addTurnaroundTime(i-curProcess.lastRunTime);
 //                curProcess.expectedEndTime++;
                 curProcess.remainingTime--;
                 curProcess.lastRunTime = i;
@@ -166,26 +117,11 @@ public class ShortestRemainingTimeFirst extends Scheduler {
 //                    waitingQueues.get(curProcess.expectedEndTime-1).addLast(curProcess);
             }
             else if (i < quantaNum) {
-                timeChart.add('-');
-                stats.addQuanta();
+                timeChart.add("-");
+                currentRunStats.addQuanta();
             }
             i++;
         }
-
-        System.out.println(this.scheduler);
-        printTimeChart(timeChart);
-        stats.printRoundAvgStats();
-        storeOneRoundStats(stats);
+        this.printCurrentRunStats(q);
     }
-
-    public static void main (String[] args) {
-//        ArrayList<Process> processes = ProcessGenerator.generate();
-        ArrayList<Process> processes = ProcessGenerator.generateSetOfProcesses(20);
-        for (Process p : processes)
-            System.out.println(p);
-        ShortestRemainingTimeFirst test = new ShortestRemainingTimeFirst();
-        test.schedule(processes, 50);
-        test.printAvgStats();
-    }
-
 }
