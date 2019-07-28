@@ -28,12 +28,12 @@ public class StatsPerRun {
         return (double)totalWaitingTime / processCount;
     }
 
-    public double getAvgResponseTime () {
+    public double getAvgServiceTime() {
         return (double) totalServiceTime / processCount;
     }
 
     public double getAvgThroughput() {
-        return 150 * (double)processCount / quanta;
+        return (double)processCount / quanta;
     }
 
     public void addWaitingTime(int time) {
@@ -70,7 +70,7 @@ public class StatsPerRun {
     public void printRoundAvgStats(ArrayList<Process> q) {
         calculateAvgStats(q);
         System.out.format("    Turnaround: %-2.3f Service: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/%d quantas\n",
-                getAvgTurnaroundTime(), getAvgResponseTime(), getAvgWaitingTime(), getAvgThroughput(), getQuanta());
+                getAvgTurnaroundTime(), getAvgServiceTime(), getAvgWaitingTime(), getAvgThroughput(), getQuanta());
         System.out.println();
     }
 
@@ -78,7 +78,7 @@ public class StatsPerRun {
     public void calculateAvgStats(ArrayList<Process> q) {
         for (Process p : q)
         {
-            if (p.lastRunTime > 0)
+            if (p.lastRunTime > 0 && p.runningTime == p.serviceTime)
             {
                 this.addServiceTime(p.serviceTime);
                 this.addTurnaroundTime(p.lastRunTime - p.arrivalTime);

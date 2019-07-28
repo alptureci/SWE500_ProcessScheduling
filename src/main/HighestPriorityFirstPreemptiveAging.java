@@ -5,11 +5,10 @@ import java.util.LinkedList;
 
 public class HighestPriorityFirstPreemptiveAging extends Scheduler {
 
+    private ArrayList<LinkedList<Process>> waitingQueues = new ArrayList<>(NUM_PRIORITY);
+
     public HighestPriorityFirstPreemptiveAging() {
         super("Highest Priority First-Preemptive, Aging");
-        this.waitingQueues = new ArrayList<>(NUM_PRIORITY);
-        for (int i = 0; i < NUM_PRIORITY; i++)
-            waitingQueues.add(new LinkedList<>());
     }
 
     // check if the waitingQueues are empty or not;
@@ -59,6 +58,10 @@ public class HighestPriorityFirstPreemptiveAging extends Scheduler {
     public void schedule(ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
 
+        waitingQueues.clear();
+        for (int i = 0; i < NUM_PRIORITY; i++)
+            waitingQueues.add(new LinkedList<>());
+
         int qi = 0; // track which process has been added into
         Process curProcess = null;
         int i = 0;
@@ -73,7 +76,6 @@ public class HighestPriorityFirstPreemptiveAging extends Scheduler {
                 waitingQueues.get(tmp.getPriority()-1).addLast(tmp);
                 qi++;
             }
-//            printWaitingQueue();
 
             curProcess = nextProcessToRun();
 
@@ -90,7 +92,7 @@ public class HighestPriorityFirstPreemptiveAging extends Scheduler {
                 timeChart.add(curProcess);
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
-                curProcess.waitcount = 0;
+                curProcess.waitcount = 1;
                 // if the process is not finished, add it back to waitingQueue
                 if (curProcess.runningTime != curProcess.serviceTime)
                     waitingQueues.get(curProcess.priority-1).addLast(curProcess);

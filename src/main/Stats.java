@@ -13,7 +13,7 @@ public class Stats
     public void printAvgOverallStats()
     {
         StatsTable.forEach((k, v) -> {
-            System.out.format("%s (%d run statistics): \n",k, v.size());
+            System.out.format("%s (%d runs statistics): \n",k, v.size());
             double totalAvgTurnaround = 0;
             double totalAvgWaiting = 0;
             double totalAvgResponse = 0;
@@ -21,7 +21,7 @@ public class Stats
             double totalAvgQuanta = 0;
             for (StatsPerRun stat : v) {
                 totalAvgTurnaround += stat.getAvgTurnaroundTime();
-                totalAvgResponse += stat.getAvgResponseTime();
+                totalAvgResponse += stat.getAvgServiceTime();
                 totalAvgWaiting += stat.getAvgWaitingTime();
                 totalAvgThroughput += stat.getAvgThroughput();
                 totalAvgQuanta += stat.getQuanta();

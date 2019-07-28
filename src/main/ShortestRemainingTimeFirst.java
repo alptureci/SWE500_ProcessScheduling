@@ -48,6 +48,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
     @Override
     public void schedule(ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
+        waitingQueue.clear();
         int qi = 0; // track which process has been added into
         Process curProcess = null;
         int i = 0;
@@ -74,6 +75,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
                 }
                 currentRunStats.addQuanta();
                 timeChart.add(curProcess);
+                curProcess.runningTime++;
                 curProcess.remainingTime--;
                 curProcess.lastRunTime = i;
                 // if the process is not finished, add it back to waitingQueue

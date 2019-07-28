@@ -43,6 +43,7 @@ public class RoundRobin extends Scheduler {
         while (!waitingQueue.isEmpty()) {
             Process curProcess = waitingQueue.pollFirst();
             if (curProcess.lastRunTime < curProcess.arrivalTime) continue;
+            currentRunStats.addQuanta();
             timeChart.add(curProcess);
             curProcess.runningTime++;
             curProcess.lastRunTime = i;

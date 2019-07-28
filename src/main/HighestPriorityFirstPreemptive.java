@@ -31,8 +31,8 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
 
         int qi = 0; // track which process has been added into
         Process curProcess = null;
-
         int i = 0;
+
         while (i < quantaNum || curProcess != null) {
             // first check the input list if any job should be added to waitingQueues
             // also find out which waitingQueues should be

@@ -6,6 +6,10 @@ import java.util.LinkedList;
 
 public class HighestPriorityFirstNonPreemptiveAging extends Scheduler {
 
+    private ArrayList<LinkedList<Process>> waitingQueues = new ArrayList<>(NUM_PRIORITY);
+
+
+
     public HighestPriorityFirstNonPreemptiveAging() {
         super("Highest Priority First-Non Preemptive, Aging");
     }
@@ -31,13 +35,16 @@ public class HighestPriorityFirstNonPreemptiveAging extends Scheduler {
     @Override
     public void schedule(ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
+        waitingQueues.clear();
+        for (int i = 0; i < NUM_PRIORITY; i++)
+            waitingQueues.add(new LinkedList<>());
+
         int qi = 0; // track which process has been added into
         Process curProcess = null;
 
         int i = 0;
 
         while (i < quantaNum || !isWaitingQueueEmpty()) {
-//            System.out.format("quanta %d: \n", i);
             // also find out which waitingQueues should be
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i) {
                 Process tmp = q.get(qi);
