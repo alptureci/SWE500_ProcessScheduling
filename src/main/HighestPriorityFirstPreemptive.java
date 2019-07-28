@@ -7,9 +7,6 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
 
     public HighestPriorityFirstPreemptive() {
         super("Highest Priority First-Preemptive");
-        this.waitingQueues = new ArrayList<>(NUM_PRIORITY);
-        for (int i = 0; i < NUM_PRIORITY; i++)
-            waitingQueues.add(new LinkedList<>());
     }
 
     private Process nextProcessToRun () {
@@ -25,8 +22,6 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
     @Override
     public void schedule(ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
-        StatsPerRun stats = new StatsPerRun();
-        ArrayList<String> timeChart = new ArrayList<>();
 
         int qi = 0; // track which process has been added into
         Process curProcess = null;
@@ -56,7 +51,7 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
                 }
                 else if (curProcess.lastRunTime < curProcess.arrivalTime) { // the process is never run before
                 }
-                stats.addQuanta();
+                currentRunStats.addQuanta();
                 timeChart.add(curProcess.name);
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
@@ -66,7 +61,7 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
             }
             else if (i < quantaNum) {
                 this.timeChart.addIdlePeriod();
-                stats.addQuanta();
+                currentRunStats.addQuanta();
             }
             i++;
         }

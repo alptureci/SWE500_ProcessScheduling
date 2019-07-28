@@ -96,8 +96,8 @@ public class HighestPriorityFirstPreemptiveAging extends Scheduler {
                     waitingQueues.get(curProcess.priority-1).addLast(curProcess);
             }
             else if (i < quantaNum) {
-                timeChart.addIdlePeriod();
                 currentRunStats.addQuanta();
+                timeChart.addIdlePeriod();
             }
             i++;
         }

@@ -8,9 +8,6 @@ public class HighestPriorityFirstNonPreemptiveAging extends Scheduler {
 
     public HighestPriorityFirstNonPreemptiveAging() {
         super("Highest Priority First-Non Preemptive, Aging");
-        this.waitingQueues = new ArrayList<>(NUM_PRIORITY);
-        for (int i = 0; i < NUM_PRIORITY; i++)
-            waitingQueues.add(new LinkedList<>());
     }
 
     // check if the waitingQueues are empty or not;

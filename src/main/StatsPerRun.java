@@ -69,7 +69,7 @@ public class StatsPerRun {
      */
     public void printRoundAvgStats(ArrayList<Process> q) {
         calculateAvgStats(q);
-        System.out.format("    Turnaround: %-2.3f Service: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/% quantas\n",
+        System.out.format("    Turnaround: %-2.3f Service: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/%d quantas\n",
                 getAvgTurnaroundTime(), getAvgResponseTime(), getAvgWaitingTime(), getAvgThroughput(), getQuanta());
         System.out.println();
     }

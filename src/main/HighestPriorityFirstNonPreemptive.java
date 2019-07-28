@@ -78,9 +78,6 @@ public class HighestPriorityFirstNonPreemptive extends Scheduler {
                 curProcess = null;
             i++;
         }
-
-        System.out.println(this.algorithmName);
-        timeChart.printTimeChart();
-        currentRunStats.printRoundAvgStats(q);
+        this.printCurrentRunStats(q);
     }
 }

@@ -46,7 +46,9 @@ public abstract class Scheduler {
             p.waitcount = 0;
         }
         this.waitingQueue = new LinkedList<>();
-        this.waitingQueues = new ArrayList<>();
+        this.waitingQueues = new ArrayList<>(NUM_PRIORITY);
+        for (int i = 0; i < NUM_PRIORITY; i++)
+            waitingQueues.add(new LinkedList<>());
         this.timeChart = new TimeChart();
         this.currentRunStats = new StatsPerRun();
         if (overallStats.StatsTable.containsKey(this.algorithmName))
