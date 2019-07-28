@@ -1,8 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-
 
 public class FirstComeFirstServed extends Scheduler {
 
@@ -20,6 +18,7 @@ public class FirstComeFirstServed extends Scheduler {
          */
         Process curProcess = null;
         for (int i = 0; i < quantaNum; i++) {
+            currentRunStats.addQuanta();
             // first check the input list if any job should be added to waitingQueue
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i) {
                 waitingQueue.addLast(q.get(qi++));
@@ -36,7 +35,7 @@ public class FirstComeFirstServed extends Scheduler {
              */
             if (curProcess == null && waitingQueue.size() != 0) {
                 curProcess = waitingQueue.pollFirst();
-                this.timeChart.add(curProcess.name);
+                this.timeChart.add(curProcess);
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
                 // if curProcess is finished, reset it to null;
@@ -44,7 +43,7 @@ public class FirstComeFirstServed extends Scheduler {
                     curProcess = null;
             }
             else if (curProcess != null) { // if curProcess is not finished
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
                 // if curProcess is finished, reset it to null;
@@ -60,10 +59,7 @@ public class FirstComeFirstServed extends Scheduler {
         check if curProcess is finished or not.
          */
         while (curProcess != null) {
-//        while (!waitingQueue.isEmpty()) {
-//            RunningProcess curProcess = waitingQueue.pollFirst();
-//            if (curProcess.lastRunTime < curProcess.arrivalTime) continue;
-            timeChart.add(curProcess.name);
+            timeChart.add(curProcess);
             currentRunStats.addQuanta();
             curProcess.runningTime++;
             curProcess.lastRunTime = i;

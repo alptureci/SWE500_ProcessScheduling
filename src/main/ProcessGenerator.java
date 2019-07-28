@@ -15,12 +15,13 @@ public class ProcessGenerator {
 
         for (int i = 0; i < numProcesses; i++ ) {
             String name = Character.toString(('A'+ i % 26)) + ((char)('0' + i/26));
+            int colorsSize = Process.processColors.size();
 
             int arrivalTime = random.nextInt(150);
             int serviceTime = random.nextInt(9) +1;
             int priority = random.nextInt(4) + 1;
-
-            processes.add(new Process(name, arrivalTime, serviceTime, priority));
+            int color = random.nextInt(colorsSize);
+            processes.add(new Process(name, arrivalTime, serviceTime, priority, color));
 
         }
 

@@ -38,39 +38,7 @@ public class ShortestJobFirst extends Scheduler{
                 }
         );
         int qi = 0;
-//        int index = 0;
-//        waitingQueue.addLast(new RunningProcess(q.get(qi))); // add first process to waitingqueue
-//        // for each process in q, compare its service time with other process in waitingqueue
-//        // sort waitingqueue with shortest service time
-//        for(qi = 1; qi < q.size(); qi++)
-//        {
-//
-//        	for(index = 0; index < waitingQueue.size(); index++)
-//        	{
-//        		if(q.get(qi).getServiceTime()< waitingQueue.get(index).serviceTime)
-//        			{
-//        				waitingQueue.add(index, new RunningProcess(q.get(qi)));
-//        				break;
-//        			}
-//        		if(q.get(qi).getServiceTime()== waitingQueue.get(index).serviceTime)
-//        		{
-//        			if(q.get(qi).getArrivalTime()< waitingQueue.get(index).arrivalTime)
-//        				{
-//        					waitingQueue.add(index, new RunningProcess(q.get(qi)));
-//        					break;
-//        				}
-//        			if(q.get(qi).getArrivalTime()> waitingQueue.get(index).arrivalTime)
-//        				{
-//        					waitingQueue.add(index+1, new RunningProcess(q.get(qi)));
-//        					break;
-//        				}
-//        		}
-//        	}
-//        	if(index == waitingQueue.size())
-//        			waitingQueue.addLast(new RunningProcess(q.get(qi)));
-//        }
-        
-// stats not working right. need to fix stats output        
+
         int i = 0; // indicate which timechart it is now
         Process curProcess = null; // use curProcess to check which process is running, how long it runs
         while (i < quantaNum || curProcess != null)
@@ -79,7 +47,6 @@ public class ShortestJobFirst extends Scheduler{
         (2) the waitingQueue is not empty;
          */
         {
-//            System.out.println(curProcess);
             /*
             At begining of each time slice (quanta), first check if there are any processes in q
             ready to be added into waitingQueue;
@@ -109,7 +76,7 @@ public class ShortestJobFirst extends Scheduler{
                  */
                 else if (curProcess.runningTime == 0) {
                 }
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
                 currentRunStats.addQuanta();
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
@@ -126,16 +93,6 @@ public class ShortestJobFirst extends Scheduler{
 
             i++; // if program can come here, meaning the quanta has finished, increase i;
 
-//        	for(int j=0;j<curProcess.serviceTime;j++)
-//        	{
-//        	timeChart.add(curProcess.name);
-//        	stats.addProcess();
-//            stats.addQuanta();
-//            stats.addWaitingTime(i - curProcess.lastRunTime - 1);
-//            stats.addTurnaroundTime(i-curProcess.lastRunTime);
-//            curProcess.runningTime++;
-//            curProcess.lastRunTime = i;
-//        	}
         }
         this.printCurrentRunStats(q);
 	}

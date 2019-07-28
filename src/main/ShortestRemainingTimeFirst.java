@@ -11,11 +11,11 @@ public class ShortestRemainingTimeFirst extends Scheduler {
     In this algorithm, it will be easy to use PriorityQueue for the waitingQueue;
     as every time we poll a process from waitingQueue, it will be the one with shortest remaining time;
      */
-    private PriorityQueue<Process> waitingQueues;
+    private PriorityQueue<Process> waitingQueue;
 
     public ShortestRemainingTimeFirst() {
         super("Shortest Remaining Time First");
-        waitingQueues = new PriorityQueue<>(new Comparator<Process>() {
+        waitingQueue = new PriorityQueue<>(new Comparator<Process>() {
             /*
             Define a comparator here so PriorityQueue knows how to compare two processes;
              */
@@ -106,7 +106,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
                 else if (curProcess.remainingTime == curProcess.serviceTime) { // the process is never run before quantaNum
                 }
                 currentRunStats.addQuanta();
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
 //                curProcess.expectedEndTime++;
                 curProcess.remainingTime--;
                 curProcess.lastRunTime = i;
@@ -117,7 +117,7 @@ public class ShortestRemainingTimeFirst extends Scheduler {
 //                    waitingQueues.get(curProcess.expectedEndTime-1).addLast(curProcess);
             }
             else if (i < quantaNum) {
-                timeChart.add("-");
+                timeChart.addIdlePeriod();
                 currentRunStats.addQuanta();
             }
             i++;

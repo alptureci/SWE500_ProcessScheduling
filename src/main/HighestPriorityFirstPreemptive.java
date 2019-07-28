@@ -28,15 +28,12 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
 
         int i = 0;
         while (i < quantaNum || curProcess != null) {
-//            System.out.println("before quantaNum");
-
             // first check the input list if any job should be added to waitingQueues
             // also find out which waitingQueues should be
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i) {
                 Process cur = q.get(qi);
                 waitingQueues.get(cur.getPriority()-1).addLast(cur);
                 qi++;
-
             }
 
             curProcess = nextProcessToRun();
@@ -51,8 +48,8 @@ public class HighestPriorityFirstPreemptive extends Scheduler {
                 }
                 else if (curProcess.lastRunTime < curProcess.arrivalTime) { // the process is never run before
                 }
-                currentRunStats.addQuanta();
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
+                this.currentRunStats.addQuanta();
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
                 // if the process is not finished, add it back to waitingQueue

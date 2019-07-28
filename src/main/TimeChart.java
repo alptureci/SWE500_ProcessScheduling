@@ -22,8 +22,11 @@ public class TimeChart {
         System.out.println();
     }
 
-    public void add(String str)
+    public void add(Process p)
     {
-        TimeChart.add(str);
+        TimeChart.add("|");
+        TimeChart.add(p.color);
+        TimeChart.add(p.name);
+        TimeChart.add(Process.resetColor);
     }
 }

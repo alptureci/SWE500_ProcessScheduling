@@ -14,14 +14,10 @@ public class RoundRobin extends Scheduler {
     @Override
     public void schedule (ArrayList<Process> q, int quantaNum) {
         super.schedule(q, quantaNum);
-        StatsPerRun stats = new StatsPerRun();
-
-        LinkedList<Process> waitingQueue = new LinkedList<>();
-        ArrayList<String> timeChart = new ArrayList<>();
 
         int qi = 0;
         for (int i = 0; i < quantaNum; i++) {
-            stats.addQuanta();
+            currentRunStats.addQuanta();
             // first check the input list if any job should be added to waitingQueue
             while (qi < q.size() && q.get(qi).getArrivalTime() <= i) {
                 waitingQueue.addLast(q.get(qi++));
@@ -29,7 +25,7 @@ public class RoundRobin extends Scheduler {
 
             if (waitingQueue.size() != 0) {
                 Process curProcess = waitingQueue.pollFirst();
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
                 if (curProcess.lastRunTime < curProcess.arrivalTime) { // the process is never run before
                 }
                 curProcess.runningTime++;
@@ -39,14 +35,14 @@ public class RoundRobin extends Scheduler {
                     waitingQueue.addLast(curProcess);
             }
             else
-                timeChart.add("-");
+                timeChart.addIdlePeriod();
         }
 
         int i = quantaNum;
         while (!waitingQueue.isEmpty()) {
             Process curProcess = waitingQueue.pollFirst();
             if (curProcess.lastRunTime < curProcess.arrivalTime) continue;
-            timeChart.add(curProcess.name);
+            timeChart.add(curProcess);
             curProcess.runningTime++;
             curProcess.lastRunTime = i;
             // if the process is not finished, add it back to waitingQueue

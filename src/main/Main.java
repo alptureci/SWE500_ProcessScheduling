@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
     private static final int RUNS = 5;
     private static final int QUANTA_NUM = 150;
-    private static final int PROCESS_SET_NUM = 40;
+    private static final int PROCESS_SET_NUM = 200;
 
     public static void main (String[] args) {
         Scheduler fcfs = new FirstComeFirstServed();

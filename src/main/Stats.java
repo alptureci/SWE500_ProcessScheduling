@@ -18,15 +18,17 @@ public class Stats
             double totalAvgWaiting = 0;
             double totalAvgResponse = 0;
             double totalAvgThroughput = 0;
+            double totalAvgQuanta = 0;
             for (StatsPerRun stat : v) {
                 totalAvgTurnaround += stat.getAvgTurnaroundTime();
                 totalAvgResponse += stat.getAvgResponseTime();
                 totalAvgWaiting += stat.getAvgWaitingTime();
                 totalAvgThroughput += stat.getAvgThroughput();
+                totalAvgQuanta += stat.getQuanta();
             }
-            System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/150 quantas\n",
+            System.out.format("    Turnaround: %-2.3f Response: %-2.3f Waiting: %-2.3f Throughput: %-2.3f/%-2.3f quantas\n",
                     totalAvgTurnaround/v.size(), totalAvgResponse/v.size(),
-                    totalAvgWaiting/v.size(),  totalAvgThroughput/v.size());
+                    totalAvgWaiting/v.size(),  totalAvgThroughput/v.size(), totalAvgQuanta/v.size());
         } );
 
     }

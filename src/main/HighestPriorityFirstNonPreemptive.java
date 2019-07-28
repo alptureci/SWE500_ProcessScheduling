@@ -39,8 +39,7 @@ public class HighestPriorityFirstNonPreemptive extends Scheduler {
             }
 
             if (curProcess != null) {
-//                System.out.println(curProcess);
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
                 if (curProcess.lastRunTime < curProcess.arrivalTime) { // the process is never run before
                 }
                 curProcess.runningTime++;
@@ -53,21 +52,14 @@ public class HighestPriorityFirstNonPreemptive extends Scheduler {
                 timeChart.addIdlePeriod();
         }
 
-//        RunningProcess curProcess = null;
-//        for (int wi = 0; wi < NUM_PRIORITY; wi++) {
-//            if (waitingQueues.get(wi).size() == 0) continue;
-//            curProcess = waitingQueues.get(wi).pollFirst();
-//            break;
-//        }
         int i = quantaNum;
         while (curProcess != null) {
-//            System.out.println(curProcess);
-//            RunningProcess curProcess = waitingQueue.pollFirst();
+
             if (curProcess.lastRunTime < curProcess.arrivalTime) {
                 curProcess = null;
                 continue;
             }
-            timeChart.add(curProcess.name);
+            timeChart.add(curProcess);
             currentRunStats.addQuanta();
             currentRunStats.addWaitingTime(i - curProcess.lastRunTime - 1);
             currentRunStats.addTurnaroundTime(i-curProcess.lastRunTime);

@@ -75,7 +75,7 @@ public class HighestPriorityFirstNonPreemptiveAging extends Scheduler {
                 else if (curProcess.runningTime == 0) { // the process is never run before quantaNum
                 }
                 currentRunStats.addQuanta();
-                timeChart.add(curProcess.name);
+                timeChart.add(curProcess);
                 curProcess.runningTime++;
                 curProcess.lastRunTime = i;
                 curProcess.waitcount = 0;
