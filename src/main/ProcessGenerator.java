@@ -14,7 +14,7 @@ public class ProcessGenerator {
         //random.setSeed(seed);
 
         for (int i = 0; i < numProcesses; i++ ) {
-            String name = Character.toString(('A'+ i % 26)) + ((char)('0' + i/26));
+            String name = Character.toString(('A')) + ((char)('0' + i/26));
             int colorsSize = Process.processColors.size();
 
             int arrivalTime = random.nextInt(150);

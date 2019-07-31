@@ -52,7 +52,7 @@ public abstract class Scheduler {
         }
         else
         {
-            overallStats.StatsTable.put(this.algorithmName, new ArrayList<>() {{add(currentRunStats);}});
+            overallStats.StatsTable.put(this.algorithmName, new ArrayList() {{add(currentRunStats);}});
         }
     }
 }
